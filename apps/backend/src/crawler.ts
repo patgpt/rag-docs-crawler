@@ -3,7 +3,7 @@ import path from "path";
 import { chromium, Browser, Page } from "playwright";
 import fs from "fs";
 import pLimit from 'p-limit';
-import { CRAWLER_CONFIG, validateConfig } from './config';
+import { CRAWLER_CONFIG } from './config';
 import logger from './logger';
 
 const failedUrls: string[] = [];
@@ -89,14 +89,19 @@ async function crawlWebsite(page: Page, url: string, outputPath: string, selecto
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(2000); // Wait for dynamic content to load
 
+    // Validate selector
+    if (!selector) {
+      throw new Error('Selector is undefined or empty.');
+    }
+
     // Wait for the specified selector or fallback to 'main'
     try {
       logger.info(`Waiting for content using selector: ${selector}`);
       await page.waitForFunction(
-      //@ts-expect-error - TS is not aware of the function signature
+      // @ts-ignore
         (sel: string) => {
           const element = document.querySelector(sel);
-            // @ts-expect-error - TS is not aware of the textContent property
+          // @ts-ignore
           return !!element && element.textContent?.trim().length > 0;
         },
         {}, // Empty options object
@@ -134,14 +139,12 @@ async function crawlWebsite(page: Page, url: string, outputPath: string, selecto
     logger.error(`Error crawling ${url}:`, (error as any).message);
   }
 }
-
 // Function to crawl all routes
 export async function crawlAllRoutes(baseURL: string, selector: string): Promise<void> {
-  const { maxConcurrentRequests, outputDir } = CRAWLER_CONFIG;
-
+  const { maxConcurrentRequests, outputDir, defaultSelector } = CRAWLER_CONFIG;
   let browser: Browser | null = null;
   try {
-    validateConfig(CRAWLER_CONFIG); // Validate configuration
+
     browser = await launchBrowser();
     logger.info('Browser launched successfully.');
 
@@ -160,9 +163,16 @@ export async function crawlAllRoutes(baseURL: string, selector: string): Promise
           return;
         }
         try {
-          if(!browser) throw new Error('Browser instance is not available');
+          if (!browser) throw new Error('Browser instance is not available');
           const page = await browser.newPage();
-          await crawlWebsite(page, route, outputDir, selector);
+
+          // Ensure selector is valid
+          const finalSelector = selector || defaultSelector;
+          if (!finalSelector) {
+            throw new Error('Selector is undefined or empty.');
+          }
+
+          await crawlWebsite(page, route, outputDir, finalSelector);
           await page.close(); // Close the page after crawling
         } catch (error) {
           logger.error(`Error crawling ${route}: ${(error as any).message}`);

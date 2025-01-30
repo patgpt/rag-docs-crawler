@@ -24,10 +24,10 @@ Bun.serve({
 
         // Override config with user-provided values
         CRAWLER_CONFIG.baseURL = targetUrl;
-        if (selector) CRAWLER_CONFIG.defaultSelector = selector;
+        const finalSelector = selector || CRAWLER_CONFIG.defaultSelector; // Fallback to default selector
 
         // Start crawling
-        await crawlAllRoutes(targetUrl, selector);
+        await crawlAllRoutes(targetUrl, finalSelector);
 
         return new Response(JSON.stringify({ message: 'Crawling completed successfully!' }), {
           status: 200,
