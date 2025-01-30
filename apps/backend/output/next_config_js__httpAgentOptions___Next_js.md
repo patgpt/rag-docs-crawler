@@ -1,0 +1,11 @@
+# next.config.js: httpAgentOptions | Next.js
+
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6Configurationnext.config.jshttpAgentOptionshttpAgentOptions
+In Node.js versions prior to 18, Next.js automatically polyfills fetch() with undici and enables HTTP Keep-Alive by default.
+To disable HTTP Keep-Alive for all fetch() calls on the server-side, open next.config.js and add the httpAgentOptions config:
+next.config.jsmodule.exports = {
+httpAgentOptions: {
+keepAlive: false,
+},
+}Was this helpful?</p>
+<p>supported.Send</p>
