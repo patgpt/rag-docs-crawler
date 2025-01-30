@@ -1,5 +1,6 @@
 import { CRAWLER_CONFIG } from './config';
-import { crawlAllRoutes } from './crawler';
+ 
+import logger from './logger';
 
 // Create a Bun HTTP server
 Bun.serve({
@@ -12,7 +13,7 @@ Bun.serve({
       try {
         // Parse JSON body
         const body = await req.json();
-        const { url: targetUrl, retries, concurrency, minDelay, maxDelay } = body;
+        const { url: targetUrl, selector } = body;
 
         if (!targetUrl) {
           return new Response(JSON.stringify({ message: 'URL is required.' }), {
@@ -23,20 +24,17 @@ Bun.serve({
 
         // Override config with user-provided values
         CRAWLER_CONFIG.baseURL = targetUrl;
-        if (retries) CRAWLER_CONFIG.maxRetries = retries;
-        if (concurrency) CRAWLER_CONFIG.maxConcurrentRequests = concurrency;
-        if (minDelay) CRAWLER_CONFIG.minDelay = minDelay;
-        if (maxDelay) CRAWLER_CONFIG.maxDelay = maxDelay;
+        if (selector) CRAWLER_CONFIG.defaultSelector = selector;
 
         // Start crawling
-        await crawlAllRoutes(targetUrl);
+        await crawlAllRoutes(targetUrl, selector);
 
         return new Response(JSON.stringify({ message: 'Crawling completed successfully!' }), {
           status: 200,
           headers: { 'Content-Type': 'application/json' },
         });
       } catch (error) {
-        console.error(error);
+        logger.error(error);
         return new Response(JSON.stringify({ message: 'Crawling failed.' }), {
           status: 500,
           headers: { 'Content-Type': 'application/json' },
@@ -52,4 +50,4 @@ Bun.serve({
   },
 });
 
-console.log(`Backend server running on http://localhost:${process.env.PORT || 3000}`);
+logger.info(`Backend server running on http://localhost:${process.env.PORT || 3000}`);

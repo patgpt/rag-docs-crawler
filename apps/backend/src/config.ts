@@ -1,19 +1,14 @@
-export const CRAWLER_CONFIG: CrawlerConfig = {
-  // Base URL for crawling (can be overridden by user input)
-  baseURL: 'https://nextjs.org/docs/app',
-  // Retry settings
+export const CRAWLER_CONFIG = {
+  baseURL: 'https://nextjs.org/docs/app', // Default base URL
   maxRetries: 3,
-  // Concurrency settings
   maxConcurrentRequests: 2,
-  // Delay settings (in milliseconds)
-  minDelay: 1000, // Minimum delay between requests
-  maxDelay: 5000, // Maximum delay between requests
-  // Output directory
-  outputDir: './output',
-  // Default selector for content extraction
-  defaultSelector: 'main', // Fallback selector
+  minDelay: 1000, // Minimum delay between requests (ms)
+  maxDelay: 5000, // Maximum delay between requests (ms)
+  outputDir: './output', // Output directory for Markdown files
+  defaultSelector: 'main', // Default selector for content extraction
 };
 
+// Type definition for the configuration
 type CrawlerConfig = {
   baseURL: string;
   maxRetries: number;
@@ -21,5 +16,17 @@ type CrawlerConfig = {
   minDelay: number;
   maxDelay: number;
   outputDir: string;
-  defaultSelector: string; // Add this property
+  defaultSelector: string;
 };
+
+// Function to validate the configuration
+export function validateConfig(config: Partial<CrawlerConfig>): asserts config is CrawlerConfig {
+  if (!config.baseURL) throw new Error('baseURL is required in CRAWLER_CONFIG.');
+  if (!config.outputDir) throw new Error('outputDir is required in CRAWLER_CONFIG.');
+  if (config.maxConcurrentRequests <= 0) throw new Error('maxConcurrentRequests must be greater than 0.');
+  if (config.minDelay < 0 || config.maxDelay < 0) throw new Error('Delays must be non-negative.');
+  if (config.minDelay > config.maxDelay) throw new Error('minDelay cannot be greater than maxDelay.');
+}
+
+// Validate the configuration on startup
+validateConfig(CRAWLER_CONFIG);
