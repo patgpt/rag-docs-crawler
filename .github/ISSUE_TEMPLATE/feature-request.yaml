@@ -1,0 +1,47 @@
+name: "✨ Feature Request"
+description: "Suggest an improvement or new feature."
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "## ✨ Feature Request\nDescribe the feature you would like to see."
+
+  - type: input
+    id: feature-summary
+    attributes:
+      label: "Brief Summary"
+      description: "Summarize the feature request in a sentence."
+      placeholder: "Add dark mode support."
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: "Description"
+      description: "Provide a more detailed explanation of the feature."
+      placeholder: "Describe what the feature does and why it's needed."
+
+  - type: textarea
+    id: feature-use-case
+    attributes:
+      label: "Use Case"
+      description: "Explain how this feature would be useful."
+      placeholder: "This feature helps users who prefer a dark UI."
+
+  - type: dropdown
+    id: feature-priority
+    attributes:
+      label: "Priority"
+      description: "How important is this feature?"
+      options:
+        - "💡 Nice to Have"
+        - "🔥 High Priority"
+        - "🚀 Must Have"
+
+  - type: checkboxes
+    id: feature-confirmations
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I have searched for existing feature requests."
+          required: true

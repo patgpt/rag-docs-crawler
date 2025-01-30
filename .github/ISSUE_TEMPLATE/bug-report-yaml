@@ -1,0 +1,59 @@
+name: "🐛 Bug Report"
+description: "Report an issue with the application."
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "## 🐞 Bug Report\nPlease fill in the following details to help us debug."
+
+  - type: input
+    id: bug-summary
+    attributes:
+      label: "Brief Summary"
+      description: "Provide a concise description of the bug."
+      placeholder: "The app crashes when clicking the submit button."
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: "Description"
+      description: "A more detailed explanation of the bug."
+      placeholder: "Steps to reproduce..."
+      value: "- Step 1\n- Step 2\n- Expected vs. actual behavior"
+
+  - type: input
+    id: bug-environment
+    attributes:
+      label: "Environment"
+      description: "What OS, browser, or system is this happening on?"
+      placeholder: "e.g., Windows 11, Chrome 98"
+
+  - type: dropdown
+    id: bug-severity
+    attributes:
+      label: "Severity"
+      description: "How severe is this issue?"
+      options:
+        - "⚠️ Low - Minor issue, does not affect functionality"
+        - "🔥 Medium - Affects functionality but has a workaround"
+        - "🚨 High - Critical issue, no workaround available"
+
+  - type: textarea
+    id: bug-logs
+    attributes:
+      label: "Logs & Screenshots (if applicable)"
+      description: "Paste relevant logs or add screenshots."
+      placeholder: "Paste logs here..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: bug-confirmations
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I have searched for existing issues."
+          required: true
+        - label: "I have provided steps to reproduce."
+          required: true
