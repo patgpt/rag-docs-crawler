@@ -79,9 +79,7 @@ async function extractAllLinks(baseURL: string): Promise<string[]> {
   }
 }
 
-
-
-
+// Function to crawl a single website
 async function crawlWebsite(page: Page, url: string, outputPath: string, selector: string): Promise<void> {
   try {
     logger.info(`Starting crawl for ${url}`);
@@ -95,10 +93,10 @@ async function crawlWebsite(page: Page, url: string, outputPath: string, selecto
     try {
       logger.info(`Waiting for content using selector: ${selector}`);
       await page.waitForFunction(
-        // @ts-expect-error - TS is not recognizing the selector argument
+      //@ts-expect-error - TS is not aware of the function signature
         (sel: string) => {
           const element = document.querySelector(sel);
-          // @ts-expect-error - TS is not recognizing the textContent property
+            // @ts-expect-error - TS is not aware of the textContent property
           return !!element && element.textContent?.trim().length > 0;
         },
         {}, // Empty options object
@@ -135,54 +133,54 @@ async function crawlWebsite(page: Page, url: string, outputPath: string, selecto
   } catch (error) {
     logger.error(`Error crawling ${url}:`, (error as any).message);
   }
+}
 
-  // Function to crawl all routes
-  export async function crawlAllRoutes(baseURL: string, selector: string): Promise<void> {
-    const { maxConcurrentRequests, outputDir } = CRAWLER_CONFIG;
+// Function to crawl all routes
+export async function crawlAllRoutes(baseURL: string, selector: string): Promise<void> {
+  const { maxConcurrentRequests, outputDir } = CRAWLER_CONFIG;
 
-    let browser: Browser | null = null;
-    try {
-      validateConfig(CRAWLER_CONFIG); // Validate configuration
-      browser = await launchBrowser();
-      logger.info('Browser launched successfully.');
+  let browser: Browser | null = null;
+  try {
+    validateConfig(CRAWLER_CONFIG); // Validate configuration
+    browser = await launchBrowser();
+    logger.info('Browser launched successfully.');
 
-      // Extract all routes first
-      const routes = await extractAllLinks(baseURL);
-      logger.info(`Found ${routes.length} routes to crawl:`);
-      logger.info(routes);
+    // Extract all routes first
+    const routes = await extractAllLinks(baseURL);
+    logger.info(`Found ${routes.length} routes to crawl:`);
+    logger.info(routes);
 
-      // Limit concurrency using p-limit
-      const concurrencyLimit = pLimit(maxConcurrentRequests);
-      const promises = routes.map((route) =>
-        concurrencyLimit(async () => {
-          logger.info(`Processing route: ${route}`);
-          if (failedUrls.includes(route)) {
-            logger.info(`Skipping previously failed URL: ${route}`);
-            return;
-          }
-          try {
-            if (!browser) throw new Error('Browser instance is not available');
-            const page = await browser.newPage();
-            await crawlWebsite(page, route, outputDir, selector);
-            await page.close(); // Close the page after crawling
-          } catch (error) {
-            logger.error(`Error crawling ${route}: ${(error as any).message}`);
-            failedUrls.push(route); // Add to failed URLs list
-          }
-        })
-      );
+    // Limit concurrency using p-limit
+    const concurrencyLimit = pLimit(maxConcurrentRequests);
+    const promises = routes.map((route) =>
+      concurrencyLimit(async () => {
+        logger.info(`Processing route: ${route}`);
+        if (failedUrls.includes(route)) {
+          logger.info(`Skipping previously failed URL: ${route}`);
+          return;
+        }
+        try {
+          if(!browser) throw new Error('Browser instance is not available');
+          const page = await browser.newPage();
+          await crawlWebsite(page, route, outputDir, selector);
+          await page.close(); // Close the page after crawling
+        } catch (error) {
+          logger.error(`Error crawling ${route}: ${(error as any).message}`);
+          failedUrls.push(route); // Add to failed URLs list
+        }
+      })
+    );
 
-      logger.info(`Starting to process ${promises.length} routes...`);
-      await Promise.all(promises);
-      logger.info('Finished processing all routes.');
-    } catch (error) {
-      logger.error('Critical error in crawlAllRoutes:', (error as any).message);
-    } finally {
-      if (browser) {
-        await browser.close(); // Ensure browser is closed to free resources
-        logger.info('Browser closed after crawling.');
-      }
-      logger.info('Crawling completed. Failed URLs:', failedUrls);
+    logger.info(`Starting to process ${promises.length} routes...`);
+    await Promise.all(promises);
+    logger.info('Finished processing all routes.');
+  } catch (error) {
+    logger.error('Critical error in crawlAllRoutes:', (error as any).message);
+  } finally {
+    if (browser) {
+      await browser.close(); // Ensure browser is closed to free resources
+      logger.info('Browser closed after crawling.');
     }
+    logger.info('Crawling completed. Failed URLs:', failedUrls);
   }
 }

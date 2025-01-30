@@ -1,5 +1,5 @@
 import { CRAWLER_CONFIG } from './config';
- 
+import { crawlAllRoutes } from './crawler';
 import logger from './logger';
 
 // Create a Bun HTTP server

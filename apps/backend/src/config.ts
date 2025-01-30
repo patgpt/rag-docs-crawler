@@ -20,11 +20,13 @@ type CrawlerConfig = {
 };
 
 // Function to validate the configuration
-export function validateConfig(config: Partial<CrawlerConfig>): asserts config is CrawlerConfig {
+export function validateConfig(config: CrawlerConfig): asserts config is CrawlerConfig {
+    if (!config) throw new Error('CRAWLER_CONFIG is required.');
+
   if (!config.baseURL) throw new Error('baseURL is required in CRAWLER_CONFIG.');
   if (!config.outputDir) throw new Error('outputDir is required in CRAWLER_CONFIG.');
-  if (config.maxConcurrentRequests <= 0) throw new Error('maxConcurrentRequests must be greater than 0.');
-  if (config.minDelay < 0 || config.maxDelay < 0) throw new Error('Delays must be non-negative.');
+  if (config.maxConcurrentRequests != null && config.maxConcurrentRequests <= 0) throw new Error('maxConcurrentRequests must be greater than 0.');
+  if (config.minDelay!= null && config.minDelay  < 0 || config.maxDelay < 0) throw new Error('Delays must be non-negative.');
   if (config.minDelay > config.maxDelay) throw new Error('minDelay cannot be greater than maxDelay.');
 }
 
