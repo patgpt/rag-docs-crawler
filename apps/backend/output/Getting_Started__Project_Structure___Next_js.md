@@ -1,6 +1,6 @@
 # Getting Started: Project Structure | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedProject StructureProject structure and organizationThis page provides an overview of the folder and file conventions in Next.js, as well as tips for organizing your project.
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedProject StructureProject structure and organizationThis page provides an overview of the folder and file conventions in Next.js, as well as tips for organizing your project.
 Folder and file conventions</p>
 <p>Top-level folders</p>
 <p>Top-level folders are used to organize your application's code and static assets.</p>

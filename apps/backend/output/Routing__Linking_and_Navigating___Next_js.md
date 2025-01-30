@@ -1,6 +1,6 @@
 # Routing: Linking and Navigating | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingLinking and NavigatingLinking and NavigatingThere are four ways to navigate between routes in Next.js:</p>
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingLinking and NavigatingLinking and NavigatingThere are four ways to navigate between routes in Next.js:</p>
 <p>Using the &lt;Link&gt; Component
 Using the useRouter hook (Client Components)
 Using the redirect function (Server Components)

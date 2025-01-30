@@ -1,6 +1,6 @@
 # Getting Started: Installation | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedInstallationHow to set up a new Next.js project
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedInstallationHow to set up a new Next.js project
 System requirements</p>
 <p>Node.js 18.18 or later.
 macOS, Windows (including WSL), and Linux are supported.</p>

@@ -1,38 +1,55 @@
-// src/server.ts
-import express, { Request, Response } from 'express';
-import crawlAllRoutes from './crawler';
 import { CRAWLER_CONFIG } from './config';
+import { crawlAllRoutes } from './crawler';
 
-const app = express();
-app.use(express.json());
+// Create a Bun HTTP server
+Bun.serve({
+  port: process.env.PORT || 3000,
+  async fetch(req: Request): Promise<Response> {
+    const url = new URL(req.url);
 
-// Crawl endpoint
-app.post('/crawl', async (req: Request, res: Response): Promise<void> => {
-  const { url, retries, concurrency, minDelay, maxDelay } = req.body;
+    // Handle POST /crawl endpoint
+    if (url.pathname === '/crawl' && req.method === 'POST') {
+      try {
+        // Parse JSON body
+        const body = await req.json();
+        const { url: targetUrl, retries, concurrency, minDelay, maxDelay } = body;
 
-  if (!url) {
-    res.status(400).json({ message: 'URL is required.' });
-    return; // Early return to exit the function
-  }
+        if (!targetUrl) {
+          return new Response(JSON.stringify({ message: 'URL is required.' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
 
-  try {
-    // Override config with user-provided values
-    CRAWLER_CONFIG.baseURL = url;
-    if (retries) CRAWLER_CONFIG.maxRetries = retries;
-    if (concurrency) CRAWLER_CONFIG.maxConcurrentRequests = concurrency;
-    if (minDelay) CRAWLER_CONFIG.minDelay = minDelay;
-    if (maxDelay) CRAWLER_CONFIG.maxDelay = maxDelay;
+        // Override config with user-provided values
+        CRAWLER_CONFIG.baseURL = targetUrl;
+        if (retries) CRAWLER_CONFIG.maxRetries = retries;
+        if (concurrency) CRAWLER_CONFIG.maxConcurrentRequests = concurrency;
+        if (minDelay) CRAWLER_CONFIG.minDelay = minDelay;
+        if (maxDelay) CRAWLER_CONFIG.maxDelay = maxDelay;
 
-    await crawlAllRoutes(url);
-    res.status(200).json({ message: 'Crawling completed successfully!' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Crawling failed.' });
-  }
+        // Start crawling
+        await crawlAllRoutes(targetUrl);
+
+        return new Response(JSON.stringify({ message: 'Crawling completed successfully!' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } catch (error) {
+        console.error(error);
+        return new Response(JSON.stringify({ message: 'Crawling failed.' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
+    // Default response for unsupported routes
+    return new Response(JSON.stringify({ message: 'Route not found.' }), {
+      status: 404,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  },
 });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
-});
+console.log(`Backend server running on http://localhost:${process.env.PORT || 3000}`);

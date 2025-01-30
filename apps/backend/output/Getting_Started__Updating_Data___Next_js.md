@@ -1,6 +1,6 @@
 # Getting Started: Updating Data | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedUpdating DataHow to update dataYou can update data in Next.js using React's Server Functions. This page will go through how you can create and invoke Server Functions.
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedUpdating DataHow to update dataYou can update data in Next.js using React's Server Functions. This page will go through how you can create and invoke Server Functions.
 Creating Server Functions</p>
 <p>A Server Function can be defined by using the use server directive. You can place the directive at the top of an asynchronous function to mark the function as a Server Function, or at the top of a separate file to mark all exports of that file. We recommend using a separate file in most instances.
 app/lib/actions.tsTypeScriptJavaScriptTypeScript'use server'</p>

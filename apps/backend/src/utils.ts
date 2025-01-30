@@ -1,4 +1,3 @@
-// src/utils.ts
 import { CRAWLER_CONFIG } from './config';
 
 export async function randomDelay(): Promise<void> {

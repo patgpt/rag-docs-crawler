@@ -1,6 +1,6 @@
 # Routing: Dynamic Routes | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingDynamic RoutesDynamic RoutesWhen you don't know the exact segment names ahead of time and want to create routes from dynamic data, you can use Dynamic Segments that are filled in at request time or prerendered at build time.
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingDynamic RoutesDynamic RoutesWhen you don't know the exact segment names ahead of time and want to create routes from dynamic data, you can use Dynamic Segments that are filled in at request time or prerendered at build time.
 Convention</p>
 <p>A Dynamic Segment can be created by wrapping a folder's name in square brackets: [folderName]. For example, [id] or [slug].
 Dynamic Segments are passed as the params prop to layout, page, route, and generateMetadata functions.

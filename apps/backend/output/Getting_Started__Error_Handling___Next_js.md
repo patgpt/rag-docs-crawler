@@ -1,6 +1,6 @@
 # Getting Started: Error Handling | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedError HandlingHow to handle errorsErrors can be divided into two categories: expected errors and uncaught exceptions. This page will walk you through how you can handle these errors in your Next.js application.
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedError HandlingHow to handle errorsErrors can be divided into two categories: expected errors and uncaught exceptions. This page will walk you through how you can handle these errors in your Next.js application.
 Handling expected errors</p>
 <p>Expected errors are those that can occur during the normal operation of the application, such as those from server-side form validation or failed requests. These errors should be handled explicitly and returned to the client.
 Server Actions</p>

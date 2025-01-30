@@ -1,6 +1,6 @@
 # Routing: Error Handling | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingError HandlingError HandlingErrors can be divided into two categories: expected errors and uncaught exceptions:</p>
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingError HandlingError HandlingErrors can be divided into two categories: expected errors and uncaught exceptions:</p>
 <p>Model expected errors as return values: Avoid using try/catch for expected errors in Server Actions. Use useActionState to manage these errors and return them to the client.
 Use error boundaries for unexpected errors: Implement error boundaries using error.tsx and global-error.tsx files to handle unexpected errors and provide a fallback UI.</p>
 <p>Handling Expected Errors</p>

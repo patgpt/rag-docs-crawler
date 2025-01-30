@@ -1,0 +1,4 @@
+# App Router: API Reference | Next.js
+
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6IntroductionApp RouterAPI ReferenceAPI ReferenceThe Next.js API reference is divided into the following sections:DirectivesDirectives are used to modify the behavior of your Next.js application.ComponentsAPI Reference for Next.js built-in components.File ConventionsAPI Reference for Next.js File Conventions.FunctionsAPI Reference for Next.js Functions and Hooks.ConfigurationLearn how to configure Next.js applications.CLIAPI Reference for the Next.js Command Line Interface (CLI) tools.Edge RuntimeAPI Reference for the Edge Runtime.TurbopackTurbopack is an incremental bundler optimized for JavaScript and TypeScript, written in Rust, and built into Next.js.Was this helpful?</p>
+<p>supported.Send</p>

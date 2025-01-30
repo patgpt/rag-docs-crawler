@@ -1,4 +1,3 @@
-// src/markdown-generator.ts
 import * as cheerio from 'cheerio'; // Use * as cheerio for compatibility
 import markdownIt from 'markdown-it';
 

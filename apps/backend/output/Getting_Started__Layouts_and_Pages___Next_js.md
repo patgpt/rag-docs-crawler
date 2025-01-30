@@ -1,6 +1,6 @@
 # Getting Started: Layouts and Pages | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedLayouts and PagesHow to create layouts and pagesNext.js uses file-system based routing, meaning you can use folders and files to define routes. This page will guide you through how to create layouts and pages, and link between them.
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedLayouts and PagesHow to create layouts and pagesNext.js uses file-system based routing, meaning you can use folders and files to define routes. This page will guide you through how to create layouts and pages, and link between them.
 Creating a page</p>
 <p>A page is UI that is rendered on a specific route. To create a page, add a page file inside the app directory and default export a React component. For example, to create an index page (/):</p>
 <p>app/page.tsxTypeScriptJavaScriptTypeScriptexport default function Page() {

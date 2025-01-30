@@ -1,6 +1,6 @@
 # Getting Started: CSS | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedCSSHow to use CSS in your applicationNext.js provides several ways to use CSS in your application, including:</p>
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6App RouterGetting StartedCSSHow to use CSS in your applicationNext.js provides several ways to use CSS in your application, including:</p>
 <p>CSS Modules
 Global CSS
 Tailwind CSS

@@ -1,6 +1,6 @@
 # Routing: Redirecting | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingRedirectingRedirectingThere are a few ways you can handle redirects in Next.js. This page will go through each available option, use cases, and how to manage large numbers of redirects.
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6Building Your ApplicationRoutingRedirectingRedirectingThere are a few ways you can handle redirects in Next.js. This page will go through each available option, use cases, and how to manage large numbers of redirects.
 APIPurposeWhereStatus CoderedirectRedirect user after a mutation or eventServer Components, Server Actions, Route Handlers307 (Temporary) or 303 (Server Action)permanentRedirectRedirect user after a mutation or eventServer Components, Server Actions, Route Handlers308 (Permanent)useRouterPerform a client-side navigationEvent Handlers in Client ComponentsN/Aredirects in next.config.jsRedirect an incoming request based on a pathnext.config.js file307 (Temporary) or 308 (Permanent)NextResponse.redirectRedirect an incoming request based on a conditionMiddlewareAny</p>
 <p>redirect function</p>
 <p>The redirect function allows you to redirect the user to another URL. You can call redirect in Server Components, Route Handlers, and Server Actions.redirect is often used after a mutation or event. For example, creating a post:app/actions.tsTypeScriptJavaScriptTypeScript'use server'</p>

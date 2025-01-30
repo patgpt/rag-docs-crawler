@@ -1,6 +1,6 @@
 # App Router: Examples | Next.js
 
-<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6IntroductionApp RouterExamplesExamplesData Fetching</p>
+<p>MenuUsing App RouterFeatures available in /appUsing Latest Version15.1.6Using App RouterFeatures available in /appUsing Latest Version15.1.6IntroductionApp RouterExamplesExamplesData Fetching</p>
 <p>Using the fetch API
 Using an ORM or database client
 Reading search params on the server
