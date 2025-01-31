@@ -1,5 +1,5 @@
 {
-  "name": "@backend",
+  "name": "docs-crawler-backend",
   "version": "0.1.0",
   "devDependencies": {
     "@types/bun": "latest",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "bun run src/index.ts",
-  "build": "bun build src/index.ts --outdir=dist --minify",
+    "build": "bun build src/index.ts --outdir=dist --minify",
     "dev": "bun --hot run src/index.ts"
 ,
     "lint": "eslint . --ext .ts",
