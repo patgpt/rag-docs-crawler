@@ -16,7 +16,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-    "inputs": ["src/**", "src/index.ts"]
+      "inputs": ["src/**"]
 ,
       "outputs": [
 
