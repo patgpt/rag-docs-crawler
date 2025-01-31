@@ -2,24 +2,30 @@ import { createReadStream } from 'node:fs';
 import { join } from 'node:path';
 import { crawls, pages } from '../models/crawlModel';
 import { db } from '../db';
-import { eq } from 'drizzle-orm'; // Import eq function
-import type { ServerWebSocket } from 'bun'; // Use Bun's ServerWebSocket type
+import { eq } from 'drizzle-orm';
+import type { ServerWebSocket } from 'elysia/dist/ws/bun';
+
+
 
 let requestCount = 0;
 const maxRequestsPerMinute = 100;
-const clients = new Set<ServerWebSocket>(); // Use ServerWebSocket type
+const clients = new Set<ServerWebSocket>();
 
 export async function startCrawlService(config: any) {
-  const crawl = {
+    const crawl = {
+    id: 1,
     baseUrl: config.baseUrl,
     config: JSON.stringify(config),
     status: 'running',
     createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+        updatedAt: new Date(),
+    };
 
   // Insert a new crawl record
-  await db.insert(crawls).values(crawl).execute();
+    await db.insert(crawls).values(
+      crawl
+  ).execute();
+
 
   // Simulate crawling logic
   const pagesToCrawl = await getPagesToCrawl(1); // Replace `1` with the actual crawl ID

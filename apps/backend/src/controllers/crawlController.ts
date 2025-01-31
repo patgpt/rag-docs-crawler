@@ -1,34 +1,25 @@
-import { Context } from 'elysia';
-import { startCrawlService, downloadMarkdownService, getStatusService } from '../services/crawlService';
+import { startCrawlService, getStatusService } from '../services/crawlService';
 
-export async function startCrawl(ctx: Context) {
-  const body = await ctx.request.json();
-  try {
-    await startCrawlService(body);
-    return ctx.send({ message: 'Crawl started' }, 201);
-  } catch (error) {
-    return ctx.send({ error: error.message }, 500);
-  }
-}
+export const crawlController = (app: any) => {
+  // Route to start a new crawl
+  app.post('/start', async ({ body }: { body: any }) => {
+    try {
+      await startCrawlService(body);
+      return { message: 'Crawl started successfully' }; // Return response directly
+    } catch (error) {
+      console.error('Error starting crawl:', error);
+      return { error: 'Failed to start crawl' };
+    }
+  });
 
-export async function downloadMarkdown(ctx: Context) {
-  try {
-    const fileStream = await downloadMarkdownService();
-    ctx.setHeaders({
-      'Content-Type': 'application/zip',
-      'Content-Disposition': 'attachment; filename=crawl-results.zip',
-    });
-    return new Response(fileStream);
-  } catch (error) {
-    return ctx.send({ error: error.message }, 500);
-  }
-}
-
-export async function getStatus(ctx: Context) {
-  try {
-    const status = await getStatusService();
-    return ctx.send(status);
-  } catch (error) {
-    return ctx.send({ error: error.message }, 500);
-  }
-}
+  // Route to get the status of the crawl
+  app.get('/status', async () => {
+    try {
+      const status = await getStatusService();
+      return status; // Return response directly
+    } catch (error) {
+      console.error('Error fetching crawl status:', error);
+      return { error: 'Failed to fetch crawl status' };
+    }
+  });
+};

@@ -6,8 +6,8 @@ export const crawls = pgTable('crawls', {
   baseUrl: text('base_url').notNull(), // Base URL of the crawl
   config: text('config').notNull(), // Configuration for the crawl (e.g., depth, timeout)
   status: text('status').notNull(), // Current status of the crawl (e.g., "running", "completed")
-  createdAt: timestamp('created_at').defaultNow().notNull(), // Timestamp when the crawl was created
-  updatedAt: timestamp('updated_at').defaultNow().notNull(), // Timestamp when the crawl was last updated
+  createdAt: timestamp('created_at').defaultNow(), // Timestamp when the crawl was created (optional with default value)
+  updatedAt: timestamp('updated_at').defaultNow(), // Timestamp when the crawl was last updated (optional with default value)
 });
 
 // Define the 'pages' table schema

@@ -1,9 +1,10 @@
-import { Elysia } from 'elysia';
-import { startCrawl, downloadMarkdown, getStatus } from '../controllers/crawlController';
+import type Elysia from "elysia";
+import { startCrawlService, downloadMarkdownService, getStatusService } from "../services/crawlService";
 
-const crawlRouter = new Elysia({ prefix: '/api' })
-  .post('/crawl', startCrawl)
-  .get('/download', downloadMarkdown)
-  .get('/status', getStatus);
-
-export { crawlRouter }; 
+export const crawlPlugin = (app: Elysia) =>
+  app.group('/api', group =>
+    group
+      .post('/crawl', startCrawlService)
+      .get('/download', downloadMarkdownService)
+      .get('/status', getStatusService)
+  )

@@ -1,6 +1,5 @@
+import archiver from 'archiver';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { join } from 'node:path';
-import * as archiver from 'archiver';
 
 export function createArchive(outputDir: string, outputFile: string) {
   return new Promise((resolve, reject) => {
@@ -15,7 +14,7 @@ export function createArchive(outputDir: string, outputFile: string) {
       resolve(outputFile);
     });
 
-    archive.on('error', (err) => {
+    archive.on('error', (err:any) => {
       reject(err);
     });
 

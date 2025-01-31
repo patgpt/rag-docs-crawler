@@ -1,8 +1,6 @@
 import { drizzle } from 'drizzle-orm/vercel-postgres';
+import { sql } from '@vercel/postgres';
+import * as schema from '../models/crawlModel'; // Import the schema definitions
 
-import { crawls, pages } from './schema';
-import { sql } from 'drizzle-orm';
-
-const db = drizzle(sql);
-
-export { db, crawls, pages };
+// Create a Drizzle ORM database client with schema awareness
+export const db = drizzle(sql, { schema });
