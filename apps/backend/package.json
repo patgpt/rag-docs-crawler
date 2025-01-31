@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@backend",
   "version": "0.1.0",
   "devDependencies": {
     "@types/bun": "latest",
