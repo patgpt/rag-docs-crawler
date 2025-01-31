@@ -1,24 +1,26 @@
-import { Elysia } from 'elysia'
-import { crawlPlugin } from './routes/crawlRoutes'
+import { Elysia } from "elysia";
+import { crawlPlugin } from "./routes/crawlRoutes";
 
 const app = new Elysia()
-    .use(crawlPlugin)
+  .use(crawlPlugin)
 
-  .ws('/status', {
+  .ws("/status", {
     open(ws) {
-      console.log('WebSocket connected')
+      console.log("WebSocket connected");
     },
     message(ws, message) {
-      console.log('Message received:', message)
+      console.log("Message received:", message);
     },
     close(ws) {
-      console.log('WebSocket closed')
-    }
+      console.log("WebSocket closed");
+    },
   })
-  .listen(3001)
+  .listen(3000);
 
 if (app.server) {
-  console.log(`Server is running on http://${app.server.hostname}:${app.server.port}`);
+  console.log(
+    `Server is running on http://${app.server.hostname}:${app.server.port}`,
+  );
 } else {
   console.error("Server failed to start");
 }

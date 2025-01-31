@@ -8,20 +8,24 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "start": "bun run src/index.ts",
-    "build": "bun build src/index.ts --outdir=dist --minify",
-    "dev": "bun --hot run src/index.ts"
-,
+    "start": "bun run index.ts",
+    "build": "bun build index.ts --outdir=dist --minify",
+    "dev": "bun --hot run index.ts",
     "lint": "eslint . --ext .ts",
     "test": "bun test"
   },
   "dependencies": {
     "@types/archiver": "^6.0.3",
+    "@types/turndown": "^5.0.5",
     "@vercel/postgres": "^0.10.0",
     "archiver": "^7.0.1",
     "bun": "^1.2.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.1",
-    "elysia": "^1.2.10"
+    "elysia": "^1.2.10",
+    "jsdom": "^26.0.0",
+    "playwright": "^1.50.1",
+    "turndown": "^7.2.0",
+    "winston": "^3.17.0"
   }
 }
