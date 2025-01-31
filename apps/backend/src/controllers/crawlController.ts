@@ -1,32 +1,25 @@
-import { Response, Request } from 'bun';
-import { startCrawlService, downloadMarkdownService, getStatusService } from '../services/crawlService';
+import { startCrawlService, getStatusService } from '../services/crawlService';
 
-export async function startCrawl(req: Request, res: Response) {
-  const body = await req.json();
-  try {
-    await startCrawlService(body);
-    return res.json({ message: 'Crawl started' });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-}
+export const crawlController = (app: any) => {
+  // Route to start a new crawl
+  app.post('/start', async ({ body }: { body: any }) => {
+    try {
+      await startCrawlService(body);
+      return { message: 'Crawl started successfully' }; // Return response directly
+    } catch (error) {
+      console.error('Error starting crawl:', error);
+      return { error: 'Failed to start crawl' };
+    }
+  });
 
-export async function downloadMarkdown(req: Request, res: Response) {
-  try {
-    const fileStream = await downloadMarkdownService();
-    res.setHeader('Content-Type', 'application/zip');
-    res.setHeader('Content-Disposition', 'attachment; filename=crawl-results.zip');
-    fileStream.pipe(res);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-}
-
-export async function getStatus(req: Request, res: Response) {
-  try {
-    const status = await getStatusService();
-    return res.json(status);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-}
+  // Route to get the status of the crawl
+  app.get('/status', async () => {
+    try {
+      const status = await getStatusService();
+      return status; // Return response directly
+    } catch (error) {
+      console.error('Error fetching crawl status:', error);
+      return { error: 'Failed to fetch crawl status' };
+    }
+  });
+};

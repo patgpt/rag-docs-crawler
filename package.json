@@ -15,12 +15,15 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.42",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "packageManager": "bun@1.1.21s",
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
   "dependencies": {
-    "p-limit": "^6.2.0"
+    "backend": "*",
+    "frontend": "*"
   }
 }

@@ -1,10 +1,10 @@
-import { Router } from 'bun';
-import { startCrawl, downloadMarkdown, getStatus } from '../controllers/crawlController';
+import type Elysia from "elysia";
+import { startCrawlService, downloadMarkdownService, getStatusService } from "../services/crawlService";
 
-const router = new Router();
-
-router.post('/crawl', startCrawl);
-router.get('/download', downloadMarkdown);
-router.get('/status', getStatus);
-
-export { router };
+export const crawlPlugin = (app: Elysia) =>
+  app.group('/api', group =>
+    group
+      .post('/crawl', startCrawlService)
+      .get('/download', downloadMarkdownService)
+      .get('/status', getStatusService)
+  )

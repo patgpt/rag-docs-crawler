@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+"outputs": [".next/**", "!.next/cache/**", ".vercel/output/**", "dist/**", "dist/index.js","public/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -15,7 +15,13 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+    "inputs": ["src/**", "src/index.ts"]
+,
+      "outputs": [
+
+      ],
+      "env": ["NODE_ENV"]
     }
   }
 }

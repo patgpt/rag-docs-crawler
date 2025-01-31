@@ -1,12 +1,24 @@
+import { Elysia } from 'elysia'
+import { crawlPlugin } from './routes/crawlRoutes'
 
-import { serve } from 'bun';
-import { router } from './routes/crawlRoutes';
+const app = new Elysia()
+    .use(crawlPlugin)
 
-const server = serve({
-  fetch(req) {
-    return router.fetch(req);
-  },
-  port: 3000,
-});
+  .ws('/status', {
+    open(ws) {
+      console.log('WebSocket connected')
+    },
+    message(ws, message) {
+      console.log('Message received:', message)
+    },
+    close(ws) {
+      console.log('WebSocket closed')
+    }
+  })
+  .listen(3001)
 
-console.log(`Server is running on http://localhost:${server.port}`);
+if (app.server) {
+  console.log(`Server is running on http://${app.server.hostname}:${app.server.port}`);
+} else {
+  console.error("Server failed to start");
+}
