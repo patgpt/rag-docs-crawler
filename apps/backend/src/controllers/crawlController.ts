@@ -1,32 +1,34 @@
-import { Response, Request } from 'bun';
+import { Context } from 'elysia';
 import { startCrawlService, downloadMarkdownService, getStatusService } from '../services/crawlService';
 
-export async function startCrawl(req: Request, res: Response) {
-  const body = await req.json();
+export async function startCrawl(ctx: Context) {
+  const body = await ctx.request.json();
   try {
     await startCrawlService(body);
-    return res.json({ message: 'Crawl started' });
+    return ctx.send({ message: 'Crawl started' }, 201);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return ctx.send({ error: error.message }, 500);
   }
 }
 
-export async function downloadMarkdown(req: Request, res: Response) {
+export async function downloadMarkdown(ctx: Context) {
   try {
     const fileStream = await downloadMarkdownService();
-    res.setHeader('Content-Type', 'application/zip');
-    res.setHeader('Content-Disposition', 'attachment; filename=crawl-results.zip');
-    fileStream.pipe(res);
+    ctx.setHeaders({
+      'Content-Type': 'application/zip',
+      'Content-Disposition': 'attachment; filename=crawl-results.zip',
+    });
+    return new Response(fileStream);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return ctx.send({ error: error.message }, 500);
   }
 }
 
-export async function getStatus(req: Request, res: Response) {
+export async function getStatus(ctx: Context) {
   try {
     const status = await getStatusService();
-    return res.json(status);
+    return ctx.send(status);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return ctx.send({ error: error.message }, 500);
   }
 }

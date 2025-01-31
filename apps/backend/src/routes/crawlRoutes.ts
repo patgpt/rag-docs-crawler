@@ -1,10 +1,9 @@
-import { Router } from 'bun';
+import { Elysia } from 'elysia';
 import { startCrawl, downloadMarkdown, getStatus } from '../controllers/crawlController';
 
-const router = new Router();
+const crawlRouter = new Elysia({ prefix: '/api' })
+  .post('/crawl', startCrawl)
+  .get('/download', downloadMarkdown)
+  .get('/status', getStatus);
 
-router.post('/crawl', startCrawl);
-router.get('/download', downloadMarkdown);
-router.get('/status', getStatus);
-
-export { router };
+export { crawlRouter }; 
