@@ -23,7 +23,7 @@
     ]
   },
   "dependencies": {
-    "backend": "@0.1.0",
-    "frontend": "@0.1.0"
+    "backend": "*",
+    "frontend": "*"
   }
 }
