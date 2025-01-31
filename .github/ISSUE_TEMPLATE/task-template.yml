@@ -6,21 +6,18 @@ body:
   - type: markdown
     attributes:
       value: "## 📌 Task\nDescribe the task to be completed."
-
   - type: input
     id: task-summary
     attributes:
       label: "Task Summary"
       description: "A short description of the task."
       placeholder: "Refactor API authentication."
-
   - type: textarea
     id: task-description
     attributes:
       label: "Details"
       description: "More details about the task."
       placeholder: "Refactor API auth to use JWT instead of session cookies."
-
   - type: dropdown
     id: task-priority
     attributes:
@@ -29,7 +26,6 @@ body:
         - "🟢 Low"
         - "🟠 Medium"
         - "🔴 High"
-
   - type: checkboxes
     id: task-confirmations
     attributes:
