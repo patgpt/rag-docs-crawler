@@ -2,6 +2,9 @@ import { chromium, type Page } from "playwright";
 import { logger } from "../../utils/logger";
 
 import { crawls } from "@/models/crawl.model";
+import type { Static } from "elysia";
+import { crawlConfigSchema } from "@/schema/crawl";
+import type { crawlsInsertSchema } from "@/models/crawl.model";
 
 import type { CrawlStatusService } from "@/services/crawl/crawl.status.service";
 import { ArchiverService } from "../archive/archiver.service";
@@ -21,7 +24,7 @@ export class CrawlService {
     private readonly statusService: CrawlStatusService,
   ) {}
 
-  async startCrawl(config: typeof crawls) {
+  async startCrawl(config: Static<typeof crawlConfigSchema>) {
     const crawlId = await this.crawlDatabase.createCrawlRecord(config);
     const browser = await chromium.launch();
     const context = await browser.newContext();
@@ -44,7 +47,7 @@ export class CrawlService {
           // Track failed conversions in DB
         }
 
-        await this.contentStorage.saveContent(url, markdown);
+        this.contentStorage.saveContent(url, markdown);
         crawledPages.add(url);
 
         const links = await this.extractLinks(page);
@@ -75,7 +78,9 @@ export class CrawlService {
       await browser.close();
     }
   }
-  private trackMetric(metric: keyof typeof crawls.metrics, value: number) {}
+  private trackMetric(metric: string, value: number) {
+    // Implement logic based on actual metrics
+  }
   private async extractLinks(page: Page) {
     return page.$$eval("a[href]", (anchors: HTMLAnchorElement[]) =>
       anchors.filter((a) => !a.closest("svg")).map((a) => a.href),
@@ -92,7 +97,7 @@ export class CrawlService {
     }
   }
 
-  private isValidLink(link: string, config: CrawlConfig) {
+  private isValidLink(link: string, config: Static<typeof crawlConfigSchema>) {
     return link.startsWith(config.baseUrl);
   }
 

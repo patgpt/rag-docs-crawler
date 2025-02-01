@@ -7,9 +7,11 @@ import { pages } from "@/models/pages.model";
 
 export class CrawlDatabaseService {
   async createCrawlRecord(config: typeof crawlsInsertSchema.$type) {
-    const crawl = await db.insert(crawls).values(config).execute();
-
-    return crawl;
+    const [crawl] = await db
+      .insert(crawls)
+      .values(config)
+      .returning({ id: crawls.id }); // ✅ Explicitly return the ID
+    return crawl.id; // Returns the crawlId as a number
   }
 
   async getPagesToCrawl(crawlId: number) {
