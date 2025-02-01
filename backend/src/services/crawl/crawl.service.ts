@@ -1,10 +1,8 @@
 import { chromium, type Page } from "playwright";
 import { logger } from "../../utils/logger";
 
-import { crawls } from "@/models/crawl.model";
-import type { Static } from "elysia";
 import { crawlConfigSchema } from "@/schema/crawl";
-import type { crawlsInsertSchema } from "@/models/crawl.model";
+import type { Static } from "elysia";
 
 import type { CrawlStatusService } from "@/services/crawl/crawl.status.service";
 import { ArchiverService } from "../archive/archiver.service";
@@ -12,10 +10,22 @@ import { ContentConverterService } from "../content/content-converter.service";
 import { ContentStorageService } from "../content/content-storage.service";
 import { CrawlDatabaseService } from "./crawl-database.service";
 
+/**
+ * Service responsible for crawling web pages and converting them to markdown content.
+ * Manages the crawling process, content conversion, storage, and status updates.
+ */
 export class CrawlService {
   private requestCount = 0;
   private readonly maxRequestsPerMinute = 100;
 
+  /**
+   * Creates an instance of CrawlService.
+   * @param crawlDatabase - Service for managing crawl-related database operations
+   * @param contentConverter - Service for converting HTML content to markdown
+   * @param contentStorage - Service for storing converted content
+   * @param archiver - Service for creating archives of crawled content
+   * @param statusService - Service for broadcasting crawl status updates
+   */
   constructor(
     private readonly crawlDatabase: CrawlDatabaseService,
     private readonly contentConverter: ContentConverterService,
@@ -24,6 +34,12 @@ export class CrawlService {
     private readonly statusService: CrawlStatusService,
   ) {}
 
+  /**
+   * Initiates a web crawling process based on the provided configuration.
+   * @param config - Crawl configuration containing baseUrl and other settings
+   * @throws Error if unable to launch browser or access pages
+   * @returns Promise that resolves when crawling is complete
+   */
   async startCrawl(config: Static<typeof crawlConfigSchema>) {
     const crawlId = await this.crawlDatabase.createCrawlRecord(config);
     const browser = await chromium.launch();
@@ -78,15 +94,37 @@ export class CrawlService {
       await browser.close();
     }
   }
+
+  /**
+   * Records metric data for monitoring crawl performance.
+   * @param metric - Name of the metric to track
+   * @param value - Numeric value of the metric
+   * @private
+   */
   private trackMetric(metric: string, value: number) {
     // Implement logic based on actual metrics
   }
+
+  /**
+   * Extracts all valid links from the current page.
+   * @param page - Playwright Page object representing the current page
+   * @returns Promise resolving to array of extracted URLs
+   * @private
+   */
   private async extractLinks(page: Page) {
     return page.$$eval("a[href]", (anchors: HTMLAnchorElement[]) =>
       anchors.filter((a) => !a.closest("svg")).map((a) => a.href),
     );
   }
 
+  /**
+   * Fetches HTML content from a given URL.
+   * @param page - Playwright Page object to use for fetching
+   * @param url - URL to fetch content from
+   * @returns Promise resolving to the page's HTML content
+   * @throws Error if unable to fetch or parse page content
+   * @private
+   */
   private async fetchPageContent(page: any, url: string) {
     try {
       await page.goto(url);
@@ -97,10 +135,23 @@ export class CrawlService {
     }
   }
 
+  /**
+   * Validates if a link should be included in the crawl.
+   * @param link - URL to validate
+   * @param config - Crawl configuration containing baseUrl
+   * @returns boolean indicating if the link is valid for crawling
+   * @private
+   */
   private isValidLink(link: string, config: Static<typeof crawlConfigSchema>) {
     return link.startsWith(config.baseUrl);
   }
 
+  /**
+   * Implements rate limiting for web requests.
+   * Ensures crawling doesn't exceed maxRequestsPerMinute.
+   * @returns Promise that resolves when it's safe to make the next request
+   * @private
+   */
   private async throttleRequests() {
     this.requestCount++;
     if (this.requestCount >= this.maxRequestsPerMinute) {
