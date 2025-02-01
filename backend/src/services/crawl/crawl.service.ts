@@ -2,7 +2,7 @@ import { chromium, type Page } from "playwright";
 import { logger } from "../../utils/logger";
 
 import { crawls } from "@/models/crawl.model";
-import type { CrawlConfig } from "@/schema/crawl";
+
 import type { CrawlStatusService } from "@/services/crawl/crawl.status.service";
 import { ArchiverService } from "../archive/archiver.service";
 import { ContentConverterService } from "../content/content-converter.service";
@@ -21,7 +21,7 @@ export class CrawlService {
     private readonly statusService: CrawlStatusService,
   ) {}
 
-  async startCrawl(config: CrawlConfig) {
+  async startCrawl(config: typeof crawls) {
     const crawlId = await this.crawlDatabase.createCrawlRecord(config);
     const browser = await chromium.launch();
     const context = await browser.newContext();
@@ -30,10 +30,9 @@ export class CrawlService {
     try {
       let crawledPages = new Set<string>();
       let pagesToCrawl = [config.baseUrl];
-      while (pagesToCrawl.length > 0 && crawledPages.size < config.maxPages) {
-        const url = pagesToCrawl.pop()!;
 
-        if (crawledPages.has(url)) continue;
+      while (pagesToCrawl.length > 0) {
+        const url = pagesToCrawl.pop()!;
 
         await this.throttleRequests();
         const content = await this.fetchPageContent(page, url);

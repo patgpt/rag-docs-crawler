@@ -1,20 +1,15 @@
-import { crawls, pages } from "@/models/crawl.model";
+import { crawls, type crawlsInsertSchema } from "@/models/crawl.model";
 import { db } from "../../db";
 
-import { eq } from "drizzle-orm";
-import type { CrawlConfig } from "@/schema/crawl";
+import { eq, type Table } from "drizzle-orm";
+import type { createInsertSchema } from "drizzle-typebox";
+import { pages } from "@/models/pages.model";
 
 export class CrawlDatabaseService {
-  async createCrawlRecord(config: CrawlConfig) {
-    const [crawl] = await db
-      .insert(crawls)
-      .values({
-        baseUrl: config.baseUrl,
-        config: config,
-        status: "running",
-      })
-      .returning();
-    return crawl.id;
+  async createCrawlRecord(config: typeof crawlsInsertSchema.$type) {
+    const crawl = await db.insert(crawls).values(config).execute();
+
+    return crawl;
   }
 
   async getPagesToCrawl(crawlId: number) {

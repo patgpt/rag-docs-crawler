@@ -3,9 +3,9 @@ import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
   out: "./drizzle",
-  schema: "src/models/crawl-model.ts",
+  schema: "./src/schema/crawl.ts",
   dialect: "sqlite",
   dbCredentials: {
-    url: "db.sqlite",
+    url: "sqlite.db",
   },
 });

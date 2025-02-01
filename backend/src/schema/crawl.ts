@@ -22,4 +22,8 @@ export const crawlConfigSchema = t.Object({
   }),
 });
 
-export type CrawlConfig = typeof crawlConfigSchema.static;
+export const table = {
+  crawlConfigSchema,
+} as const;
+
+export type Table = typeof table;

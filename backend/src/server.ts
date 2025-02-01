@@ -8,6 +8,8 @@ import { CrawlStatusService } from "@/services/crawl/crawl.status.service";
 import { Elysia, t } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { type Html, html, type HtmlOptions } from "@elysiajs/html";
+
+import { db } from "@/db";
 // Initialize services
 const crawlStatusService = new CrawlStatusService();
 const crawlDatabaseService = new CrawlDatabaseService();
@@ -50,8 +52,23 @@ app
     },
   );
 app
-  .get("/", (html: any) =>
-    html("<html><body><h2>Hello world!</h2></body></html>"),
+  .get(
+    "/",
+    async (html: any) =>
+      await crawlDatabaseService.createCrawlRecord({
+        baseUrl: "https://example.com",
+        maxDepth: 3,
+        maxPages: 100,
+        minDelay: 500,
+        maxDelay: 2000,
+        selector: "body",
+        maxConcurrency: 5,
+        userAgent:
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        requestTimeout: 5000,
+        ignoreRobotsTxt: false,
+        contentTypes: ["text/html", "text/plain"],
+      }),
   )
   .listen(3000);
 console.log(
