@@ -1,7 +1,7 @@
 // src/services/crawl/crawl-status.service.ts
 import type { CrawlStatus } from "@/types/crawl-status";
 import type { CrawlStatusWS } from "@/types/websocket";
-import type { ServerWebSocket } from "elysia/dist/ws/bun";
+import type { ServerWebSocket } from "elysia/ws/bun";
 
 export class CrawlStatusService {
   private clients = new Set<ServerWebSocket<CrawlStatusWS>>();

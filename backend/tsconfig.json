@@ -15,7 +15,7 @@
 
     "module": "ESNext",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
+
     "allowJs": true,
 
     // Bundler mode
@@ -24,16 +24,18 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
+    // JSX Support
+    "jsx": "react",
+    "jsxFactory": "Html.createElement",
+    "jsxFragmentFactory": "Html.Fragment",
+    "plugins": [{ "name": "@kitajs/ts-html-plugin" }],
+
     // Best practices
     "strict": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
-
-    // Some stricter flags
-    "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": true,
     "types": ["bun"]
   },
-  "include": ["src", "index.ts", "./drizzle.config.ts"]
+  "include": ["src", "index.ts"]
 }

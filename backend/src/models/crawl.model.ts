@@ -1,23 +1,23 @@
 import type { CrawlConfig } from "@/schema/crawl";
+import { int, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import {
-  text,
-  pgTable,
-  jsonb,
-  integer,
-  serial,
-  timestamp,
-} from "drizzle-orm/pg-core";
-// Add crawl relationship and JSONB for config
-export const crawls = pgTable("crawls", {
-  id: serial("id").primaryKey(),
+  createSelectSchema,
+  createInsertSchema,
+  createUpdateSchema,
+} from "drizzle-typebox";
+
+// The "crawls" table stores crawl configurations and metrics.
+// Note: We use text with { mode: "json" } to store JSON data.
+export const crawls = sqliteTable("crawls", {
+  id: int().primaryKey({ autoIncrement: true }),
   baseUrl: text("base_url").notNull(),
-  config: jsonb("config").$type<CrawlConfig>().notNull(), // Store as JSONB
+  config: text("config", { mode: "json" }).$type<CrawlConfig>().notNull(),
   status: text("status").notNull().default("pending"),
-  startedAt: timestamp("started_at").defaultNow(),
-  completedAt: timestamp("completed_at"),
+  startedAt: integer("started_at", { mode: "timestamp" }),
+  completedAt: integer("completed_at", { mode: "timestamp" }),
   error: text("error"),
-  // Metrics
-  metrics: jsonb("metrics").$type<{
+  // Metrics column stores JSON data about crawl performance.
+  metrics: text("metrics", { mode: "json" }).$type<{
     pagesCrawled: number;
     pagesFailed: number;
     avgLatency: number;
@@ -25,17 +25,34 @@ export const crawls = pgTable("crawls", {
   }>(),
 });
 
-// Enhance pages table
-export const pages = pgTable("pages", {
-  id: serial("id").primaryKey(),
+// The "pages" table stores information about each crawled page.
+export const pages = sqliteTable("pages", {
+  id: int().primaryKey({ autoIncrement: true }),
+  // Use the SQLite integer builder for foreign keys.
+  etag: text("etag"),
   crawlId: integer("crawl_id").references(() => crawls.id),
   url: text("url").notNull(),
   content: text("content"),
-  selectorContent: text("selector_content"), // Content from CSS selector
+  selectorContent: text("selector_content"), // Content extracted via CSS selectors
   statusCode: integer("status_code"),
   error: text("error"),
-  headers: jsonb("headers"),
-  latency: integer("latency"), // ms
+  // Store headers as JSON data.
+  lastCrawledAt: integer("last_crawled_at", { mode: "timestamp" }),
+  headers: text("headers", { mode: "json" }),
+  latency: integer("latency"), // Latency in milliseconds
   retryCount: integer("retry_count").default(0),
-  crawledAt: timestamp("crawled_at").defaultNow(),
+  crawledAt: integer("created_at", { mode: "timestamp" }),
 });
+
+// Define the "crawls" table.
+// We store JSON data (for config and metrics) using text columns in JSON mode.
+
+// Generate TypeBox schemas from your Drizzle schemas.
+// These models can be used for validating API inputs and outputs.
+export const crawlsSelectSchema = createSelectSchema(crawls);
+export const crawlsInsertSchema = createInsertSchema(crawls);
+export const crawlsUpdateSchema = createUpdateSchema(crawls);
+
+export const pagesSelectSchema = createSelectSchema(pages);
+export const pagesInsertSchema = createInsertSchema(pages);
+export const pagesUpdateSchema = createUpdateSchema(pages);

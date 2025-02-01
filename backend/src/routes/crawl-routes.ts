@@ -1,10 +1,11 @@
 // src/routes/crawl-routes.ts
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 import type { CrawlService } from "@/services/crawl/crawl.service";
 import type { CrawlStatusService } from "@/services/crawl/crawl.status.service";
-import { crawlConfigSchema } from "@/schema/crawl";
-import type { ServerWebSocket } from "elysia/dist/ws/bun";
+
+import type { ServerWebSocket } from "elysia/ws/bun";
 import type { CrawlStatusWS } from "@/types/websocket";
+import { crawlConfigSchema } from "@/schema/crawl";
 
 export const crawlRoutes = (
   crawlService: CrawlService,
@@ -16,8 +17,7 @@ export const crawlRoutes = (
         .post(
           "/crawl",
           async ({ body }) => {
-            const validated = crawlConfigSchema.parse(body);
-            await crawlService.startCrawl(validated);
+            await crawlService.startCrawl(body);
             return { message: "Crawl started successfully" };
           },
           {
@@ -33,7 +33,7 @@ export const crawlRoutes = (
         statusService.addClient(ws.raw as ServerWebSocket<CrawlStatusWS>);
       },
       message(ws, message) {
-        // Handle messages if needed
+        ws.send(message);
       },
       close(ws) {
         statusService.removeClient(ws.raw as ServerWebSocket<CrawlStatusWS>);

@@ -1,8 +1,9 @@
 import type { TSchema } from "elysia";
-import type { TypeCheck } from "elysia/dist/type-system";
-import type { ElysiaWS } from "elysia/dist/ws";
+import type { TypeCheck } from "elysia/type-system";
+import type { ServerWebSocket } from "elysia/ws/bun";
 
-export type CrawlStatusWS = ElysiaWS<{
+
+export type CrawlStatusWS = ServerWebSocket<{
   id?: string | undefined;
   validator?: TypeCheck<TSchema> | undefined;
 }>;

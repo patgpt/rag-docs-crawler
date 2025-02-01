@@ -1,13 +1,13 @@
 import { chromium, type Page } from "playwright";
 import { logger } from "../../utils/logger";
 
-import { CrawlDatabaseService } from "./crawl-database.service";
+import { crawls } from "@/models/crawl.model";
+import type { CrawlConfig } from "@/schema/crawl";
+import type { CrawlStatusService } from "@/services/crawl/crawl.status.service";
+import { ArchiverService } from "../archive/archiver.service";
 import { ContentConverterService } from "../content/content-converter.service";
 import { ContentStorageService } from "../content/content-storage.service";
-import { ArchiverService } from "../archive/archiver.service";
-import type { CrawlStatusService } from "@/services/crawl/crawl.status.service";
-import type { CrawlConfig } from "@/schema/crawl";
-import type { crawls } from "@/models/crawl.model";
+import { CrawlDatabaseService } from "./crawl-database.service";
 
 export class CrawlService {
   private requestCount = 0;
@@ -76,9 +76,7 @@ export class CrawlService {
       await browser.close();
     }
   }
-  private trackMetric(metric: keyof typeof crawls.metrics, value: number) {
-    // Update DB metrics column
-  }
+  private trackMetric(metric: keyof typeof crawls.metrics, value: number) {}
   private async extractLinks(page: Page) {
     return page.$$eval("a[href]", (anchors: HTMLAnchorElement[]) =>
       anchors.filter((a) => !a.closest("svg")).map((a) => a.href),
