@@ -1,0 +1,20 @@
+[install]
+alias = {
+    "@" = "./src"
+}
+logLevel = "debug" # "debug" | "warn" | "error"
+telemetry = false
+[test]
+root = "./src/__tests__"
+[test]
+preload = ["./test.setup.ts"]
+[install]
+optional = true
+[install]
+dev = true
+[install]
+peer = true
+[install]
+production = false
+[install]
+auto = "auto"

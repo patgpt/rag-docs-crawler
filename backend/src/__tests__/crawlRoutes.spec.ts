@@ -1,4 +1,4 @@
-import { crawlPlugin } from '@/routes/crawlRoutes';
+import { crawlPlugin } from '@/routes/crawl-routes';
 import { describe, it, expect, mock } from 'bun:test';
 import { Elysia } from 'elysia';
 
