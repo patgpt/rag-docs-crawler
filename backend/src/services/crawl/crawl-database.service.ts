@@ -1,9 +1,8 @@
+import { db } from "@/db";
 import { crawls, type crawlsInsertSchema } from "@/models/crawl.model";
-import { db } from "../../db";
 
-import { eq, type Table } from "drizzle-orm";
-import type { createInsertSchema } from "drizzle-typebox";
 import { pages } from "@/models/pages.model";
+import { eq } from "drizzle-orm";
 
 export class CrawlDatabaseService {
   async createCrawlRecord(config: typeof crawlsInsertSchema.$type) {

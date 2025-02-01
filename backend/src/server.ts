@@ -27,30 +27,15 @@ const crawlService = new CrawlService(
 
 const app = new Elysia().use(swagger({ path: "/docs" }));
 app.use(crawlRoutes(crawlService, crawlStatusService));
-app
-  .use(
-    html({
-      autoDetect: true,
-      autoDoctype: true,
-      contentType: "text/html",
-      isHtml: () => true,
-    }),
-  )
-  .post(
-    "/",
-    ({ body }) =>
-      `<html lang="en">
-            <head>
-                <title>Hello World</title>
-            </head>
-            <body>
-                <h1 safe>${body}</h1>
-            </body>
-        </html>`,
-    {
-      body: t.String(),
-    },
-  );
+app.use(
+  html({
+    autoDetect: true,
+    autoDoctype: true,
+    contentType: "text/html",
+    isHtml: () => true,
+  }),
+);
+
 app
   .get(
     "/",
