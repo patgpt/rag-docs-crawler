@@ -5,11 +5,9 @@ import { ContentStorageService } from "@/services/content/content-storage.servic
 import { CrawlDatabaseService } from "@/services/crawl/crawl-database.service";
 import { CrawlService } from "@/services/crawl/crawl.service";
 import { CrawlStatusService } from "@/services/crawl/crawl.status.service";
-import { CrawlQueue } from "@/services/crawl/crawl-queue";
-import { html, Html } from "@elysiajs/html";
+import { html } from "@elysiajs/html";
 import { swagger } from "@elysiajs/swagger";
-import { Elysia, type RouteSchema } from "elysia";
-import { crawlConfigSchema } from "@/schema/crawl";
+import { Elysia } from "elysia";
 
 // Initialize services
 const crawlStatusService = new CrawlStatusService();
@@ -24,34 +22,29 @@ const crawlService = new CrawlService(
   contentStorageService,
   archiverService,
   crawlStatusService,
-
 );
-
-
-
 
 const app = new Elysia({
   name: "Crawl API",
   detail: {
     description: "An API for crawling and archiving web pages",
-
   },
   serve: {
     hostname: "localhost",
     port: 3000,
   },
-}).use(swagger({
-  path: "/docs", documentation: {
-    info: {
-      title: "Crawl API",
-      description: "An API for crawling and archiving web pages",
-      version: "1.0.0",
+}).use(
+  swagger({
+    path: "/docs",
+    documentation: {
+      info: {
+        title: "Crawl API",
+        description: "An API for crawling and archiving web pages",
+        version: "1.0.0",
+      },
     },
-  },
-}));
-
-
-
+  }),
+);
 
 app.use(crawlRoutes(crawlService, crawlStatusService));
 app.use(
@@ -71,7 +64,7 @@ app
   .get(
     "/",
     async (Html) =>
-       `
+      `
         <Html>
           <head>
             <title>Crawl API</title>
@@ -83,8 +76,8 @@ app
         </Html>
       `,
   )
-  .listen(3000)
+  .listen(3000);
 
 console.log(
   `🦊 Server is running at http://${app.server?.hostname}:${app.server?.port}`,
-)
+);

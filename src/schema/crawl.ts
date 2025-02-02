@@ -1,5 +1,7 @@
 import { t } from "elysia";
 
+// Define a schema for the crawl configurations
+
 export const crawlConfigSchema = t.Object({
   baseUrl: t.String({ format: "uri", pattern: "^https?://" }),
   maxDepth: t.Number({ minimum: 1, default: 3 }),
@@ -17,13 +19,9 @@ export const crawlConfigSchema = t.Object({
   contentTypes: t.Array(t.String(), {
     default: ["text/html", "text/plain"],
   }),
-  // Optional filtering parameters:
-  includePathSegments: t.Optional(
-    t.Array(t.String(), { default: ["/docs/"] })
-  ),
-  excludePathSegments: t.Optional(
-    t.Array(t.String(), { default: ["/version/"] })
-  ),
+  // Optional fields to filter URLs based on text:
+  includeText: t.Optional(t.Array(t.String(), { default: [] })),
+  excludeText: t.Optional(t.Array(t.String(), { default: [] })),
 });
 
 export const table = {

@@ -9,14 +9,13 @@ import { eq } from "drizzle-orm";
 import { type Static } from "elysia";
 
 export class CrawlDatabaseService {
-
   private crawlStatusService: CrawlStatusService;
 
   constructor() {
     this.crawlStatusService = new CrawlStatusService();
   }
 
-  async crawl(config: Static< typeof   crawlsInsertSchema>) {
+  async crawl(config: Static<typeof crawlsInsertSchema>) {
     const [crawl] = await db
       .insert(crawls)
       .values(config)
@@ -25,23 +24,27 @@ export class CrawlDatabaseService {
   }
 
   async getPagesToCrawl(crawlId: number) {
-    const result = await db.select().from(pages).where(eq(pages.crawlId, crawlId)).execute();
+    const result = await db
+      .select()
+      .from(pages)
+      .where(eq(pages.crawlId, crawlId))
+      .execute();
     logger.info(`Pages to crawl: ${result.length}`);
     return result;
   }
 
   async updateCrawlStatus(crawlId: number, status: string) {
-  try {
+    try {
       const result = await db
-      .update(crawls)
-      .set({ status })
-      .where(eq(crawls.id, crawlId))
-      .execute();
-    logger.info(`Crawl status updated in db: ${result}`);
-    return result;
-  } catch (error) {
-    logger.error(`Failed to update crawl status: ${error}`);
-  }
+        .update(crawls)
+        .set({ status })
+        .where(eq(crawls.id, crawlId))
+        .execute();
+      logger.info(`Crawl status updated in db: ${result}`);
+      return result;
+    } catch (error) {
+      logger.error(`Failed to update crawl status: ${error}`);
+    }
   }
   // TODO: Implement the updateCrawlMetrics method
   async updateCrawlMetrics(crawlId: number, metrics: Record<string, number>) {
@@ -54,7 +57,6 @@ export class CrawlDatabaseService {
     // return result;
   }
 
-
   async updatePageContent(pageId: number, content: string, etag: string) {
     const result = await db
       .update(pages)
@@ -66,7 +68,9 @@ export class CrawlDatabaseService {
   }
   async createCrawlRecord(config: Static<typeof crawlConfigSchema>) {
     try {
-      logger.info('Creating new crawl record', { config: JSON.stringify(config) });
+      logger.info("Creating new crawl record", {
+        config: JSON.stringify(config),
+      });
 
       const [crawl] = await db
         .insert(crawls)
@@ -78,7 +82,7 @@ export class CrawlDatabaseService {
         })
         .returning({ id: crawls.id });
 
-      logger.info('Crawl record created successfully', { crawlId: crawl.id });
+      logger.info("Crawl record created successfully", { crawlId: crawl.id });
 
       try {
         await this.crawlStatusService.broadcastStatus({
@@ -90,41 +94,43 @@ export class CrawlDatabaseService {
           crawlId: crawl.id,
         });
       } catch (broadcastError) {
-        logger.error('Failed to broadcast crawl status', { error: broadcastError });
+        logger.error("Failed to broadcast crawl status", {
+          error: broadcastError,
+        });
       }
 
       return crawl.id;
     } catch (error) {
-      logger.error('Failed to create crawl record', { error });
+      logger.error("Failed to create crawl record", { error });
       throw error;
     }
   }
   // Add to CrawlDatabaseService class
   async upsertPage(pageData: Static<typeof pagesInsertSchema>) {
     try {
-      logger.info('Upserting page data', { url: pageData.url });
+      logger.info("Upserting page data", { url: pageData.url });
 
-      const existing = await db.select()
+      const existing = await db
+        .select()
         .from(pages)
         .where(eq(pages.url, pageData.url!))
         .execute();
 
       let result;
       if (existing.length > 0) {
-        logger.debug('Updating existing page', { pageId: existing[0].id });
-        result = await db.update(pages)
+        logger.debug("Updating existing page", { pageId: existing[0].id });
+        result = await db
+          .update(pages)
           .set(pageData)
           .where(eq(pages.id, existing[0].id))
           .execute();
       } else {
-        logger.debug('Inserting new page');
-        result = await db.insert(pages)
-          .values(pageData)
-          .execute();
+        logger.debug("Inserting new page");
+        result = await db.insert(pages).values(pageData).execute();
       }
 
       try {
-          this.crawlStatusService.broadcastStatus({
+        this.crawlStatusService.broadcastStatus({
           status: "running",
           urlsCrawled: 0,
           urlsRemaining: 1,
@@ -133,32 +139,33 @@ export class CrawlDatabaseService {
           crawlId: pageData.crawlId,
         });
       } catch (broadcastError) {
-        logger.error('Failed to broadcast page status', { error: broadcastError });
+        logger.error("Failed to broadcast page status", {
+          error: broadcastError,
+        });
       }
 
       return result;
     } catch (error) {
-      logger.error('Failed to upsert page', { error, pageData });
+      logger.error("Failed to upsert page", { error, pageData });
       throw error;
     }
   }
 
   async getPageByUrl(url: string) {
     try {
-      logger.info('Fetching page by URL', { url });
+      logger.info("Fetching page by URL", { url });
 
-      const result = await db.select()
+      const result = await db
+        .select()
         .from(pages)
         .where(eq(pages.url, url))
         .execute();
 
-      logger.debug('Page fetch result', { found: result.length > 0 });
+      logger.debug("Page fetch result", { found: result.length > 0 });
       return result[0];
     } catch (error) {
-      logger.error('Failed to fetch page by URL', { error, url });
+      logger.error("Failed to fetch page by URL", { error, url });
       throw error;
     }
   }
-
-
 }

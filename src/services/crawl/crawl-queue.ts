@@ -5,13 +5,19 @@ export class CrawlQueue {
   private urlSet = new Set<string>(); // Fast lookups
   private urlDepths = new Map<string, number>(); // Track depth per URL
 
-  constructor(initialUrl: string, private readonly maxDepth: number) {
+  constructor(
+    initialUrl: string,
+    private readonly maxDepth: number,
+  ) {
     this.add([initialUrl], 0);
   }
 
   add(urls: string[], depth: number) {
     if (depth > this.maxDepth) {
-      logger.debug("Skipping URLs due to max depth", { depth, maxDepth: this.maxDepth });
+      logger.debug("Skipping URLs due to max depth", {
+        depth,
+        maxDepth: this.maxDepth,
+      });
       return;
     }
     for (const url of urls) {
@@ -48,7 +54,7 @@ export class CrawlQueue {
           removedCount++;
         }
       }
-      this.queue = this.queue.filter(url => this.urlSet.has(url));
+      this.queue = this.queue.filter((url) => this.urlSet.has(url));
       logger.debug(`Removed ${removedCount} URLs from queue`);
       return removedCount;
     } catch (error) {
