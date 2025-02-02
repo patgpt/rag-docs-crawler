@@ -2,6 +2,9 @@
   "compilerOptions": {
     "target": "ESNext",
     "esModuleInterop": true,
+    "checkJs": true,
+    "pretty": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
@@ -37,5 +40,5 @@
     "noUnusedParameters": true,
     "types": ["bun"]
   },
-  "include": ["src", "index.ts", "./src/drizzle.config.ts"]
+  "include": ["src", "index.ts", "./src/drizzle.config.ts",".prettierrc", "eslint.config.ts","drizzle.config.ts","server.ts","test.setup.ts","prettierrc.js"]
 }

@@ -25,7 +25,7 @@ export const pages = sqliteTable("pages", {
   retryCount: integer("retry_count").default(0),
   crawledAt: integer("created_at", { mode: "timestamp" }).notNull(), // ✅ Add `notNull()`
 });
-
+  
 export const pagesSelectSchema = createSelectSchema(pages);
 export const pagesInsertSchema = createInsertSchema(pages);
 export const pagesUpdateSchema = createUpdateSchema(pages);
