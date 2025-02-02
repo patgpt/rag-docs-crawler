@@ -33,7 +33,7 @@ export const crawlRoutes = (
         statusService.addClient(ws.raw as ServerWebSocket<CrawlStatusWS>);
       },
       message(ws, message) {
-        ws.send(message);
+        ws.raw.send(message);
       },
       close(ws) {
         statusService.removeClient(ws.raw as ServerWebSocket<CrawlStatusWS>);

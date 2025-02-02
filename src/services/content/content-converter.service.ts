@@ -1,4 +1,5 @@
 // content - converter.service.ts;
+import { logger } from "@/utils/logger";
 import TurndownService from "turndown";
 
 export class ContentConverterService {
@@ -9,6 +10,8 @@ export class ContentConverterService {
   });
 
   convertToMarkdown(html: string): string {
-    return this.turndown.turndown(html);
+    const result = this.turndown.turndown(html);
+    logger.info("Converted content to markdown", { length: result.length });
+    return result;
   }
 }
