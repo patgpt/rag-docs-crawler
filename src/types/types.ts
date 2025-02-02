@@ -16,6 +16,8 @@ export type CrawlStatus = {
   errors: string[];
   crawlId: number;
 };
+
+
 export interface PageResult {
   url: string;
   depth: number;

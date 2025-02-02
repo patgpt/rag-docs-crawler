@@ -6,7 +6,7 @@ import { join } from "path";
 import fs from "fs";
 import { sanitize } from "sanitize-filename-ts";
 export class ContentStorageService {
-  private readonly outputDir = join(__dirname, "../../output");
+  private readonly outputDir = join(__dirname, "../../../output");
 
   saveContent(url: string, content: string) {
     const filename = this.generateFilename(url);
@@ -41,10 +41,10 @@ export class ContentStorageService {
 
   private ensureDirectoryExists() {
     if (!existsSync(this.outputDir)) {
-      logger.info(`Creating output directory: ${this.outputDir}`);
+      logger.info(`No directory: ${this.outputDir}`);
       const dir = mkdirSync(this.outputDir, { recursive: true });
       if (dir) {
-        logger.error(`Failed to create output directory: ${this.outputDir}`);
+        logger.error(`Created output directory: ${this.outputDir}`);
       }
     }
   }
